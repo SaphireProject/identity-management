@@ -1,12 +1,15 @@
 <html>
+
+<table>
 <body>
 <div>Список пользователей</div>
 {{#users}}
     <div>
         <b>{{username}}</b>
         <span>{{roles}}</span>
+        <a href="/user/${user.id}">edit</a>
     </div>
 {{/users}}
-
 </body>
+</table>
 </html>

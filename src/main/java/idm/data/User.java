@@ -17,6 +17,8 @@ public class User implements UserDetails {
 
     private String username;
     private String password;
+    private String email;
+    private String activationCode;
 
 
 
@@ -82,7 +84,19 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public String getActivationCode() {
+        return activationCode;
+    }
 
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }

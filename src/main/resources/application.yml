@@ -8,5 +8,11 @@ spring:
     password: postgres
     generate-ddl: false
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate.ddl-auto: validate
+  mail:
+    host: smtp.yandex.ru
+    username: user.game.access
+    password: 390PEydq738
+    port: 465
+    protocol: smtp
