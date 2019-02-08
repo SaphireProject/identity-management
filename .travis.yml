@@ -7,7 +7,7 @@ jdk:
 
 script:
   # JaCoCo is used to have code coverage, the agent has to be activated 
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=SaphireProject_identity-management -Dsonar.organization=saphireproject -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=269bea7ab43febfd49f584198d20c83296b0604d
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.projectKey=SaphireProject_identity-management -Dsonar.organization=saphireproject -Dsonar.host.url=https://sonarcloud.io  -Dsonar.login=29874f3dd01e9b606da66ecb56a7a8b1d9ed11a1
 
 cache:
   directories:
