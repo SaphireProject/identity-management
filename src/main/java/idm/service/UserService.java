@@ -4,17 +4,21 @@ package idm.service;
 import idm.data.Client;
 import idm.data.Role;
 import idm.data.User;
+import idm.model.UserDto;
 import idm.repository.RepositoryClient;
 import idm.repository.RepositoryUser;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -25,7 +29,7 @@ public class UserService implements UserDetailsService {
     private RepositoryClient repositoryClient;
 
     @Autowired
-    private MailSender mailSender;
+    private BCryptPasswordEncoder bcryptEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,35 +50,6 @@ public class UserService implements UserDetailsService {
         Client client = new Client(UUID.randomUUID().toString(), user);
         repositoryClient.save(client);
 
-        sendMessage(user);
-
-        return true;
-    }
-
-    private void sendMessage(User user) {
-        if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to Sweater. Please, visit next link: http://localhost:8080/activate/%s",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
-
-            mailSender.send(user.getEmail(), "Activation code", message);
-        }
-    }
-
-    public boolean activateUser(String code) {
-        User user = repositoryUser.findByActivationCode(code);
-
-        if (user == null) {
-            return false;
-        }
-
-        user.setActivationCode(null);
-
-        repositoryUser.save(user);
-
         return true;
     }
 
@@ -82,47 +57,33 @@ public class UserService implements UserDetailsService {
         return repositoryUser.findAll();
     }
 
-
-    public void saveUser(User user, String username, Map<String, String> form) {
-        user.setUsername(username);
-
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        repositoryUser.save(user);
+    public User findById(long id) {
+        Optional<User> optionalUser = repositoryUser.findById(id);
+        return optionalUser.isPresent() ? optionalUser.get() : null;
     }
 
-    public void updateProfile(User user, String password, String email) {
-        String userEmail = user.getEmail();
+    public User findOne(String username) {
+        return repositoryUser.findByUsername(username);
+    }
 
-        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
-                (userEmail != null && !userEmail.equals(email));
+    public void delete(long id) {
+        repositoryUser.deleteById(id);
+    }
 
-        if (isEmailChanged) {
-            user.setEmail(email);
 
-            if (!StringUtils.isEmpty(email)) {
-                user.setActivationCode(UUID.randomUUID().toString());
-            }
+    public User saveUser(UserDto user) {
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+        return repositoryUser.save(newUser);
+    }
+
+    public UserDto update(UserDto userDto) {
+        User user = findById(userDto.getId());
+        if(user != null) {
+            BeanUtils.copyProperties(userDto, user, "password");
+            repositoryUser.save(user);
         }
-
-        if (!StringUtils.isEmpty(password)) {
-            user.setPassword(password);
-        }
-
-        repositoryUser.save(user);
-
-        if (isEmailChanged) {
-            sendMessage(user);
-        }
+        return userDto;
     }
 }

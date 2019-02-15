@@ -1,48 +1,64 @@
 package idm.controller;
 
+import idm.config.JwtTokenUtil;
 import idm.data.User;
+import idm.model.ApiResponse;
+import idm.model.AuthToken;
+import idm.model.LoginUser;
+import idm.repository.RepositoryUser;
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@Controller
+@RestController
+@RequestMapping("/auth")
 public class RegistrationController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/registration")
-    public String registration() {
-        return "registration";
-    }
+    @Autowired
+    private RepositoryUser repositoryUser;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+
 
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model) {
+    public ApiResponse<User> addUser(@RequestBody User user) {
 
         if (!userService.addUser(user)) {
-            model.put("message", "User exists!");
-            return "registration";
+            return new ApiResponse<>(HttpStatus.OK.value(), "error", null);
         }
-
-        return "redirect:/login";
+        return new ApiResponse<>(HttpStatus.OK.value(), "add success", null);
     }
 
-    @GetMapping("/activate/{code}")
-    public String activate(Model model, @PathVariable String code) {
-        boolean isActivated = userService.activateUser(code);
+    @PostMapping("/test")
+    public String addUser(@RequestBody String string) {
 
-        if (isActivated) {
-            model.addAttribute("message", "User successfully activated");
-        } else {
-            model.addAttribute("message", "Activation code is not found!");
-        }
-
-        return "login";
+        return "string2";
     }
+
+
+
+    @RequestMapping(value = "authenticate/generate-token", method = RequestMethod.POST)
+    public ApiResponse<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
+                loginUser.getPassword()));
+        final User user = userService.findOne(loginUser.getUsername());
+        final String token = jwtTokenUtil.generateToken(user);
+        return new ApiResponse<>(200, "success", new AuthToken(token, user.getUsername()));
+    }
+
+
+
 }

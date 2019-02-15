@@ -1,8 +1,10 @@
-/*package idm.config;
+package idm.config;
 
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,18 +21,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
     @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers("/", "/registration", "/activate/*").permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                .and()
-                    .logout()
-                    .permitAll();
+        http.cors().and().csrf().disable().
+                authorizeRequests()
+                .antMatchers("/auth/test", "/auth/authenticate/generate-token").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override
@@ -41,4 +43,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 }
-*/
