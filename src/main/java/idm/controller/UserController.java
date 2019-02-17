@@ -20,8 +20,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ApiResponse<User> saveUser(@RequestBody UserDto user){
-        return new ApiResponse<>(HttpStatus.OK.value(), "User saved successfully.", userService.saveUser(user));
+    public ApiResponse<User> save(@RequestBody UserDto user){
+        return new ApiResponse<>(HttpStatus.OK.value(), "User saved successfully.", userService.save(user));
     }
 
     @GetMapping

@@ -5,7 +5,9 @@ import idm.data.User;
 import idm.model.ApiResponse;
 import idm.model.AuthToken;
 import idm.model.LoginUser;
+import idm.model.UserDto;
 import idm.repository.RepositoryUser;
+import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,15 +32,18 @@ public class RegistrationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
+
 
 
     @PostMapping("/registration")
-    public ApiResponse<User> addUser(@RequestBody User user) {
+    public ApiResponse<User> addUser(@RequestBody UserDto userDto) {
 
-        if (!userService.addUser(user)) {
-            return new ApiResponse<>(HttpStatus.OK.value(), "error", null);
-        }
-        return new ApiResponse<>(HttpStatus.OK.value(), "add success", null);
+        authenticationService.register(userDto);
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "register success", null);
     }
 
     @PostMapping("/test")
@@ -50,14 +55,15 @@ public class RegistrationController {
 
 
     @RequestMapping(value = "authenticate/generate-token", method = RequestMethod.POST)
-    public ApiResponse<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-
+    public ApiResponse<AuthToken> authjwt(@RequestBody LoginUser loginUser) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
                 loginUser.getPassword()));
         final User user = userService.findOne(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
         return new ApiResponse<>(200, "success", new AuthToken(token, user.getUsername()));
     }
+
+
 
 
 
