@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
     @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -28,12 +31,6 @@ public class RegistrationController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private AuthenticationService authenticationService;
-
-
-
 
     @PostMapping("/registration")
     public ApiResponse<User> addUser(@RequestBody UserRegistrationDto userRegistrationDto) {
@@ -52,7 +49,7 @@ public class RegistrationController {
 
 
     @RequestMapping(value = "authenticate/generate-token", method = RequestMethod.POST)
-    public ApiResponse<AuthToken> authjwt(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    public ApiResponse<AuthToken> auth(@RequestBody LoginUser loginUser) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
                 loginUser.getPassword()));
         final User user = userService.findOne(loginUser.getUsername());

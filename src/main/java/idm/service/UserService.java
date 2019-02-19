@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,9 +22,6 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private RepositoryClient repositoryClient;
-
-    @Autowired
-    private BCryptPasswordEncoder bcryptEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -78,7 +74,7 @@ public class UserService implements UserDetailsService {
     public User save(UserDto user) {
         User newUser = new User();
         newUser.setUsername(user.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
+        newUser.setPassword(user.getPassword());
         return repositoryUser.save(newUser);
     }
 
