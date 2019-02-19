@@ -2,10 +2,7 @@ package idm.controller;
 
 import idm.config.JwtTokenUtil;
 import idm.data.User;
-import idm.model.ApiResponse;
-import idm.model.AuthToken;
-import idm.model.LoginUser;
-import idm.model.UserDto;
+import idm.model.*;
 import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
@@ -39,9 +36,9 @@ public class RegistrationController {
 
 
     @PostMapping("/registration")
-    public ApiResponse<User> addUser(@RequestBody UserDto userDto) {
+    public ApiResponse<User> addUser(@RequestBody UserRegistrationDto userRegistrationDto) {
 
-        authenticationService.register(userDto);
+        authenticationService.register(userRegistrationDto);
 
         return new ApiResponse<>(HttpStatus.OK.value(), "register success", null);
     }

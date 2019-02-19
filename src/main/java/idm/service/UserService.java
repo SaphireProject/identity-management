@@ -1,7 +1,6 @@
 package idm.service;
 
 
-import idm.data.Role;
 import idm.data.User;
 import idm.model.UserDto;
 import idm.repository.RepositoryClient;
@@ -41,7 +40,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(Collections.singleton(Role.USER));
+       // user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
 
         repositoryUser.save(user);
