@@ -1,24 +1,15 @@
 package idm.model;
 
-public class AuthToken {
-    private String token;
+public class AuthUserResponse {
+    private Object token;
     private String username;
 
-    public AuthToken(){
-
-    }
-
-
-    public AuthToken(String token, String username){
+    public AuthUserResponse(Object token , String username) {
         this.token = token;
         this.username = username;
     }
 
-    public AuthToken(String token){
-        this.token = token;
-    }
-
-    public String getToken() {
+    public Object getToken() {
         return token;
     }
 

@@ -7,7 +7,6 @@ import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -38,7 +37,7 @@ public class RegistrationController {
 
         authenticationService.register(userRegistrationDto);
 
-        return new ApiResponse<>(HttpStatus.OK.value(), "register success", null);
+        return new ApiResponse<>(/*HttpStatus.OK.value(), "register success",*/ null);
     }
 
     @PostMapping("/test")
@@ -50,12 +49,12 @@ public class RegistrationController {
 
 
     @RequestMapping(value = "authenticate/generate-token", method = RequestMethod.POST)
-    public ApiResponse<AuthToken> auth(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    public AuthUserResponse auth(@RequestBody LoginUser loginUser) throws AuthenticationException {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
                 loginUser.getPassword()));
         final User user = userService.findOne(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
-        return new ApiResponse<>(200, "success", new AuthToken(token, user.getUsername()));
+        return new AuthUserResponse(token, user.getUsername() );
     }
 
 
