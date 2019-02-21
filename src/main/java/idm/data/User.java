@@ -1,30 +1,34 @@
 package idm.data;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name ="usertable")
-public class User implements UserDetails {
+public class User /*implements UserDetails */{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     private String username;
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
 
     private String email;
 
     private String activationCode;
 
+    public User() {
+    }
 
+    public User(String username , String password , String email , String activationCode , Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.activationCode = activationCode;
+        this.roles = roles;
+    }
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -43,6 +47,7 @@ public class User implements UserDetails {
         return username;
     }
 
+    /*
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -63,14 +68,13 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+   */
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
+
+   // @Override
+    //public Collection</*? extends GrantedAuthority*/> getAuthorities() {
+  //      return getRoles();
+   // }
 
     public String getPassword() {
         return password;
@@ -102,5 +106,8 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

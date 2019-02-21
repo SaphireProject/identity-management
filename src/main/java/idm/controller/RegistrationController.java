@@ -2,7 +2,10 @@ package idm.controller;
 
 import idm.config.JwtTokenUtil;
 import idm.data.User;
-import idm.model.*;
+import idm.model.AuthUserResponse;
+import idm.model.LoginUser;
+import idm.model.RegisterUserResponse;
+import idm.model.UserRegistrationDto;
 import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
@@ -12,9 +15,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins="*")
+//@CrossOrigin(origins="*")
 public class RegistrationController {
 
     @Autowired
@@ -32,12 +37,14 @@ public class RegistrationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/registration")
-    public ApiResponse<User> addUser(@RequestBody UserRegistrationDto userRegistrationDto) {
+    @RequestMapping(value = "registration", method = RequestMethod.POST)
+    public RegisterUserResponse addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
 
         authenticationService.register(userRegistrationDto);
 
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "register success",*/ null);
+        return new RegisterUserResponse(userRegistrationDto.getUsername(),
+                userRegistrationDto.getPassword(),
+                userRegistrationDto.getEmail());
     }
 
     @PostMapping("/test")

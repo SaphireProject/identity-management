@@ -25,10 +25,14 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repositoryUser.findByUsername(username);
+        User user = repositoryUser.findByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority());
     }
 
-
+    /*
     public boolean addUser(User user) {
         User userFromDb = repositoryUser.findByUsername(user.getUsername());
 
@@ -45,6 +49,7 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+    */
 
 
     private List<SimpleGrantedAuthority> getAuthority() {

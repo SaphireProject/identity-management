@@ -1,16 +1,15 @@
 package idm.model;
 
-import javax.validation.constraints.NotNull;
-
-public class UserRegistrationDto {
-    //private int id;
-    @NotNull
+public class RegisterUserResponse {
     private String username;
-    @NotNull
     private String password;
-    @NotNull
     private String email;
 
+    public RegisterUserResponse(String username , String password , String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
@@ -35,5 +34,4 @@ public class UserRegistrationDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
