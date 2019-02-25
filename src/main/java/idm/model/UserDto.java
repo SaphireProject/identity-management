@@ -2,11 +2,20 @@ package idm.model;
 
 public class UserDto {
 
-    private int id;
+    private long id;
     private String username;
     private String password;
+    private String email;
 
-    public int getId() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public long getId() {
         return id;
     }
 

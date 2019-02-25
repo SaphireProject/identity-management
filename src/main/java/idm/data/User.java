@@ -8,15 +8,20 @@ import java.util.Set;
 @Table(name ="usertable")
 public class User /*implements UserDetails */{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    @Column
     private String username;
+
     //@JsonIgnore
+    @Column
     private String password;
 
+    @Column
     private String email;
 
+    @Column
     private String activationCode;
 
     public User() {

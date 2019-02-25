@@ -11,6 +11,14 @@ public class UserRegistrationDto {
     @NotNull
     private String email;
 
+    public UserRegistrationDto() {
+    }
+
+    public UserRegistrationDto(@NotNull String username , @NotNull String password , @NotNull String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
@@ -35,5 +43,4 @@ public class UserRegistrationDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

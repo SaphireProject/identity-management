@@ -5,15 +5,18 @@ import idm.data.User;
 import idm.model.UserDto;
 import idm.repository.RepositoryClient;
 import idm.repository.RepositoryUser;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -75,18 +78,23 @@ public class UserService implements UserDetailsService {
         repositoryUser.deleteById(id);
     }
 
-
     public User save(UserDto user) {
         User newUser = new User();
+        newUser.setId(user.getId());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
+        newUser.setEmail(user.getEmail());
         return repositoryUser.save(newUser);
     }
 
-    public UserDto update(UserDto userDto) {
-        User user = findById(userDto.getId());
+    @Transactional
+    public UserDto update(UserDto userDto, long id) {
+        User user = findById(id);
         if(user != null) {
-            BeanUtils.copyProperties(userDto, user, "password");
+            user.setId(id);
+            user.setEmail(userDto.getEmail());
+            user.setUsername(userDto.getUsername());
+            user.setPassword(userDto.getPassword());
             repositoryUser.save(user);
         }
         return userDto;

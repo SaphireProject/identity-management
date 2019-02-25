@@ -4,7 +4,6 @@ import idm.config.JwtTokenUtil;
 import idm.data.User;
 import idm.model.AuthUserResponse;
 import idm.model.LoginUser;
-import idm.model.RegisterUserResponse;
 import idm.model.UserRegistrationDto;
 import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
@@ -38,11 +37,11 @@ public class RegistrationController {
     private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "registration", method = RequestMethod.POST)
-    public RegisterUserResponse addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
+    public UserRegistrationDto addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
 
         authenticationService.register(userRegistrationDto);
 
-        return new RegisterUserResponse(userRegistrationDto.getUsername(),
+        return new UserRegistrationDto(userRegistrationDto.getUsername(),
                 userRegistrationDto.getPassword(),
                 userRegistrationDto.getEmail());
     }
