@@ -21,10 +21,9 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private UserService userService;
-
-
 
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
@@ -48,7 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().
                 authorizeRequests()
                 .antMatchers("/auth/test", "/auth/authenticate/generate-token","/api/v2/api-docs",
-                        "/swagger-ui.html","/swagger", "/auth/registration").permitAll()
+                        "/swagger-ui.html","/swagger", "/auth/registration","/user/edit/{id}",
+                        "/user/{id}","/user/delete/{id}","/user/list").permitAll()
                 .anyRequest().authenticated();
     }
 

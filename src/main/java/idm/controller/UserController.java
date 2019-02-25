@@ -12,37 +12,52 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins="*")
+//@CrossOrigin(origins="*")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    /*
     @PostMapping
     public ApiResponse<User> save(@RequestBody UserDto user){
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "User saved successfully.",*/ userService.save(user));
+        return new ApiResponse<>( userService.save(user));
     }
 
-    @GetMapping
+    */
+
+    //@GetMapping
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResponse<List<User>> listUser(){
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "User list fetched successfully.",*/userService.findAll());
+        return new ApiResponse<>(userService.findAll());
     }
 
     @GetMapping("/{id}")
     public ApiResponse<User> getOne(@PathVariable int id){
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "User fetched successfully.",*/userService.findById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ApiResponse<UserDto> update(@RequestBody UserDto userDto) {
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "User updated successfully.",*/userService.update(userDto));
+        return new ApiResponse<>(userService.findById(id));
     }
 
 
-    @DeleteMapping("/{id}")
-    public ApiResponse<Void> delete(@PathVariable int id) {
+    /*
+    @RequestMapping(path = "/me", method = RequestMethod.GET)
+    public ApiResponse<UserDto> getPersonalPage(){
+
+
+    }
+    */
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT)
+    public ApiResponse<UserDto> update(@PathVariable long id, @RequestBody UserDto userDto) {
+        //userService.save(userDto);
+        return new ApiResponse<>(userService.update(userDto,id));
+    }
+
+
+    //@DeleteMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ApiResponse<Void> delete(@PathVariable long id) {
         userService.delete(id);
-        return new ApiResponse<>(/*HttpStatus.OK.value(), "User fetched successfully.",*/ null);
+        return new ApiResponse<>(null);
     }
 
 

@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long client_id;
 
     private String secret_id;
