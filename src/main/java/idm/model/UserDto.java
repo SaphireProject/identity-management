@@ -2,7 +2,7 @@ package idm.model;
 
 public class UserDto {
 
-    private long id;
+    //private long id;
     private String username;
     private String password;
     private String email;
@@ -14,7 +14,7 @@ public class UserDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
+/*
     public long getId() {
         return id;
     }
@@ -22,7 +22,7 @@ public class UserDto {
     public void setId(int id) {
         this.id = id;
     }
-
+*/
     public String getUsername() {
         return username;
     }

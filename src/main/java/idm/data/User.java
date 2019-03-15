@@ -1,12 +1,13 @@
 package idm.data;
 
 
+import idm.model.UserData;
+
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name ="usertable")
-public class User /*implements UserDetails */{
+public class User /*implements UserDetails*/ {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -27,7 +28,7 @@ public class User /*implements UserDetails */{
     public User() {
     }
 
-    public User(String username , String password , String email , String activationCode , Set<Role> roles) {
+    public User(String username , String password , String email , String activationCode , Role roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -35,10 +36,10 @@ public class User /*implements UserDetails */{
         this.roles = roles;
     }
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+   // @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    //@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    private Role roles;
 
     public Long getId() {
         return id;
@@ -52,7 +53,7 @@ public class User /*implements UserDetails */{
         return username;
     }
 
-    /*
+/*
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -73,15 +74,15 @@ public class User /*implements UserDetails */{
         return true;
     }
 
-   */
 
 
-   // @Override
-    //public Collection</*? extends GrantedAuthority*/> getAuthorities() {
-  //      return getRoles();
-   // }
 
-    public String getPassword() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+*/
+    public String getPasssword() {
         return password;
     }
 
@@ -89,11 +90,11 @@ public class User /*implements UserDetails */{
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Role getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
 
@@ -115,4 +116,6 @@ public class User /*implements UserDetails */{
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public UserData toUserData() { return new UserData(id, username, roles); }
 }

@@ -3,10 +3,20 @@ package idm.model;
 public class AuthUserResponse {
     private Object token;
     private String username;
+    private String email;
 
-    public AuthUserResponse(Object token , String username) {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public AuthUserResponse(Object token , String username, String email) {
         this.token = token;
         this.username = username;
+        this.email = email;
     }
 
     public Object getToken() {

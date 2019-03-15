@@ -1,13 +1,21 @@
 package idm.controller;
 
 
+import idm.config.JwtGenerator;
 import idm.data.User;
 import idm.model.ApiResponse;
-import idm.model.UserDto;
+import idm.model.UserData;
+import idm.model.UserUpdate;
+import idm.service.AuthenticationService;
 import idm.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -16,17 +24,16 @@ import java.util.List;
 public class UserController {
 
     @Autowired
+    private JwtGenerator jwtGenerator;
+
+    private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
     private UserService userService;
 
-    /*
-    @PostMapping
-    public ApiResponse<User> save(@RequestBody UserDto user){
-        return new ApiResponse<>( userService.save(user));
-    }
+    @Autowired
+    private AuthenticationService authenticationService;
 
-    */
-
-    //@GetMapping
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResponse<List<User>> listUser(){
         return new ApiResponse<>(userService.findAll());
@@ -38,22 +45,23 @@ public class UserController {
     }
 
 
-    /*
     @RequestMapping(path = "/me", method = RequestMethod.GET)
-    public ApiResponse<UserDto> getPersonalPage(){
-
-
-    }
-    */
-
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT)
-    public ApiResponse<UserDto> update(@PathVariable long id, @RequestBody UserDto userDto) {
-        //userService.save(userDto);
-        return new ApiResponse<>(userService.update(userDto,id));
+    public ApiResponse<UserData> getPage(@RequestHeader("Authorization") String request){
+        //User user= userService.getUserPersonalPage();
+        return new ApiResponse<>(jwtGenerator.decodeNew(request).getUserData());
     }
 
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestBody UserUpdate userUpdate,
+                                 @RequestHeader("Authorization") String request,
+                                 HttpServletResponse response) {
+        LOGGER.info(request);
+        userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
+        authenticationService.authenticateUpdate(userUpdate.getUsername(),
+                jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
-    //@DeleteMapping("/delete/{id}")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ApiResponse<Void> delete(@PathVariable long id) {
         userService.delete(id);

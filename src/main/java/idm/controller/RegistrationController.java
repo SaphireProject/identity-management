@@ -1,7 +1,6 @@
 package idm.controller;
 
-import idm.config.JwtTokenUtil;
-import idm.data.User;
+import idm.config.JwtGenerator;
 import idm.model.AuthUserResponse;
 import idm.model.LoginUser;
 import idm.model.UserRegistrationDto;
@@ -9,17 +8,25 @@ import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/auth")
-//@CrossOrigin(origins="*")
+
 public class RegistrationController {
+
+    private static final String BEARER_PREFIX = "Bearer ";
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -34,35 +41,24 @@ public class RegistrationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtGenerator jwtGenerator;
 
     @RequestMapping(value = "registration", method = RequestMethod.POST)
-    public UserRegistrationDto addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
-
+    public ResponseEntity addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
         authenticationService.register(userRegistrationDto);
 
-        return new UserRegistrationDto(userRegistrationDto.getUsername(),
-                userRegistrationDto.getPassword(),
-                userRegistrationDto.getEmail());
+        return new ResponseEntity(OK);
     }
 
-    @PostMapping("/test")
-    public String addUser(@RequestBody String string) {
-
-        return "string2";
+    @RequestMapping(value ="authenticate/generate-token", method = RequestMethod.POST)
+    public AuthUserResponse login(@RequestBody LoginUser loginUser, HttpServletResponse response){
+        authenticationService.authenticate(loginUser.getUsername(), loginUser.getPassword(), response);
+        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
+                loginUser.getUsername(),
+                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail());
     }
 
-
-
-    @RequestMapping(value = "authenticate/generate-token", method = RequestMethod.POST)
-    public AuthUserResponse auth(@RequestBody LoginUser loginUser) throws AuthenticationException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(),
-                loginUser.getPassword()));
-        final User user = userService.findOne(loginUser.getUsername());
-        final String token = jwtTokenUtil.generateToken(user);
-        return new AuthUserResponse(token, user.getUsername() );
-    }
-
+//написать для админа
 
 
 

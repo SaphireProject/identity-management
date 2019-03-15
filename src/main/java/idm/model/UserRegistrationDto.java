@@ -3,23 +3,20 @@ package idm.model;
 import javax.validation.constraints.NotNull;
 
 public class UserRegistrationDto {
-    //private int id;
+
     @NotNull
     private String username;
     @NotNull
     private String password;
     @NotNull
     private String email;
-
-    public UserRegistrationDto() {
-    }
-
+/*
     public UserRegistrationDto(@NotNull String username , @NotNull String password , @NotNull String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
-
+*/
     public String getUsername() {
         return username;
     }

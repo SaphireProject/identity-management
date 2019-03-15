@@ -16,3 +16,12 @@ spring:
     password: 390PEydq738
     port: 465
     protocol: smtp
+jwt:
+  expireDays: 3000
+  refreshDays: 3
+  secret: jhrstbojsetoibneaascac
+springfox:
+  documentation:
+    swagger.v2.path: /rest/docs
+
+
