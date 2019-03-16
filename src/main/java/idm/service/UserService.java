@@ -93,14 +93,20 @@ public class UserService/* implements UserDetailsService*/ {
      * */
     public UserUpdate update(UserUpdate userUpdate, Long id) {
         User user = findById(id);
-        LOGGER.info("user found");
-        User user1=findOne(userUpdate.getUsername());
-        if(user != null & user1 == null) {
+        LOGGER.info("user with this id found");
+        User userNew=findOne(userUpdate.getUsername());
+        if(user != null & user.getUsername().equals(userUpdate.getUsername())) {
+
+            LOGGER.info("username doesn't change");
             user.setEmail(userUpdate.getEmail());
-            user.setUsername(userUpdate.getUsername());
-            //user.setPassword(userDto.getPassword());
             repositoryUser.save(user);
-            LOGGER.info("success update");
+            LOGGER.info("successful email update");
+        }
+        else if(user != null & userNew==null){
+            user.setUsername(userUpdate.getUsername());
+            user.setEmail(userUpdate.getEmail());
+            repositoryUser.save(user);
+            LOGGER.info("successful email and username update");
         }
         else{
             throw new BaseException("user with this login already exists",null);

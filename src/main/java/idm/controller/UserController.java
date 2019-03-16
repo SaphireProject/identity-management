@@ -4,7 +4,6 @@ package idm.controller;
 import idm.config.JwtGenerator;
 import idm.data.User;
 import idm.model.ApiResponse;
-import idm.model.UserData;
 import idm.model.UserUpdate;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
@@ -46,16 +45,15 @@ public class UserController {
 
 
     @RequestMapping(path = "/me", method = RequestMethod.GET)
-    public ApiResponse<UserData> getPage(@RequestHeader("Authorization") String request){
-        //User user= userService.getUserPersonalPage();
-        return new ApiResponse<>(jwtGenerator.decodeNew(request).getUserData());
+    public UserUpdate getPage(@RequestHeader("Authorization") String request){
+        User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
+        return new UserUpdate(user.getUsername(),user.getEmail());
     }
-
+//обдумать еще раз
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestBody UserUpdate userUpdate,
                                  @RequestHeader("Authorization") String request,
                                  HttpServletResponse response) {
-        LOGGER.info(request);
         userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
         authenticationService.authenticateUpdate(userUpdate.getUsername(),
                 jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
