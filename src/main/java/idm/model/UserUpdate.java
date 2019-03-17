@@ -26,4 +26,7 @@ public class UserUpdate {
         this.username = username;
         this.email = email;
     }
+
+    public UserUpdate() {
+    }
 }
