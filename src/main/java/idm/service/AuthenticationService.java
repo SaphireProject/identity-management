@@ -2,7 +2,6 @@ package idm.service;
 
 import idm.config.BCryptPasswordEncoder;
 import idm.config.JwtGenerator;
-import idm.data.Client;
 import idm.data.Role;
 import idm.data.User;
 import idm.exception.BaseException;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 @Service
 public class AuthenticationService {
@@ -46,13 +44,12 @@ public class AuthenticationService {
         user = new User();
         user.setUsername(userRegistrationDto.getUsername());
         user.setPassword(userRegistrationDto.getPassword());
-        user.setActivationCode(UUID.randomUUID().toString());
-
         user.setEmail((userRegistrationDto.getEmail()));
         user.setRoles(Role.USER);
+        user.setBio(userRegistrationDto.getBio());
 
-        Client client = new Client(UUID.randomUUID().toString(), user);
-        repositoryClient.save(client);
+        //Client client = new Client(UUID.randomUUID().toString(), user);
+        //repositoryClient.save(client);
         repositoryUser.save(user);
     }
 /*
@@ -89,7 +86,7 @@ public class AuthenticationService {
         jwtGenerator.encodeJwt(userData, response);
     }
     @Transactional
-    public void authenticateUpdate(String login,String password, HttpServletResponse response){
+    public void authenticateUpdate(String login, String password, HttpServletResponse response){
         User user = repositoryUser.findByUsername(login);
         UserData userData = user.toUserData();
         jwtGenerator.encodeJwt(userData, response);

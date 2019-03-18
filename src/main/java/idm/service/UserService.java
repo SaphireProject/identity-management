@@ -99,12 +99,14 @@ public class UserService/* implements UserDetailsService*/ {
 
             LOGGER.info("username doesn't change");
             user.setEmail(userUpdate.getEmail());
+            user.setBio(userUpdate.getBio());
             repositoryUser.save(user);
             LOGGER.info("successful email update");
         }
         else if(user != null & userNew==null){
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
+            user.setBio(userUpdate.getBio());
             repositoryUser.save(user);
             LOGGER.info("successful email and username update");
         }

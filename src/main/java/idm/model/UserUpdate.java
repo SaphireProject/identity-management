@@ -6,6 +6,16 @@ public class UserUpdate {
 
     private String email;
 
+    private String bio;
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -22,9 +32,10 @@ public class UserUpdate {
         this.email = email;
     }
 
-    public UserUpdate(String username , String email) {
+    public UserUpdate(String username , String email, String bio) {
         this.username = username;
         this.email = email;
+        this.bio=bio;
     }
 
     public UserUpdate() {

@@ -8,7 +8,6 @@ import idm.repository.RepositoryUser;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/auth")
@@ -44,10 +42,13 @@ public class RegistrationController {
     private JwtGenerator jwtGenerator;
 
     @RequestMapping(value = "registration", method = RequestMethod.POST)
-    public ResponseEntity addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
+    public AuthUserResponse addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,
+                                  HttpServletResponse response) {
         authenticationService.register(userRegistrationDto);
-
-        return new ResponseEntity(OK);
+        authenticationService.authenticate(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(), response);
+        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
+                userRegistrationDto.getUsername(),
+                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail());
     }
 
     @RequestMapping(value ="authenticate/generate-token", method = RequestMethod.POST)

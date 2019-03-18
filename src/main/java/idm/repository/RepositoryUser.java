@@ -10,8 +10,5 @@ import org.springframework.stereotype.Repository;
 @ComponentScan
 public interface RepositoryUser extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByUsername(String username);
-
-    User findByActivationCode(String code);
-
     User getOne(Long id);
 }

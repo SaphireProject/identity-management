@@ -10,13 +10,9 @@ public class UserRegistrationDto {
     private String password;
     @NotNull
     private String email;
-/*
-    public UserRegistrationDto(@NotNull String username , @NotNull String password , @NotNull String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
-*/
+
+    private String bio;
+
     public String getUsername() {
         return username;
     }
@@ -40,4 +36,13 @@ public class UserRegistrationDto {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
 }

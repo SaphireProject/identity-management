@@ -23,16 +23,24 @@ public class User /*implements UserDetails*/ {
     private String email;
 
     @Column
-    private String activationCode;
+    private String bio;
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
     public User() {
     }
 
-    public User(String username , String password , String email , String activationCode , Role roles) {
+    public User(String username , String password , String email , String bio, Role roles) {
         this.username = username;
         this.password = password;
+        this.bio=bio;
         this.email = email;
-        this.activationCode = activationCode;
         this.roles = roles;
     }
 
@@ -53,36 +61,7 @@ public class User /*implements UserDetails*/ {
         return username;
     }
 
-/*
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-*/
-    public String getPasssword() {
+    public String getPassword() {
         return password;
     }
 
@@ -106,13 +85,6 @@ public class User /*implements UserDetails*/ {
         this.email = email;
     }
 
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
     public void setUsername(String username) {
         this.username = username;
     }

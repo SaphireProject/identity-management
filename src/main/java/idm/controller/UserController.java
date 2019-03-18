@@ -47,7 +47,7 @@ public class UserController {
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public UserUpdate getPage(@RequestHeader("Authorization") String request){
         User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
-        return new UserUpdate(user.getUsername(),user.getEmail());
+        return new UserUpdate(user.getUsername(),user.getEmail(),user.getBio());
     }
 //обдумать еще раз
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
