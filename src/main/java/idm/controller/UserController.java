@@ -42,8 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<User> getOne(@PathVariable int id){
-        return new ApiResponse<>(userService.findById(id));
+    public UserUpdate getOne(@PathVariable int id) {
+        return new UserUpdate(userService.findById(id).getUsername(),
+                userService.findById(id).getEmail(),userService.findById(id).getBio());
+
     }
 
 
@@ -60,7 +62,8 @@ public class UserController {
         userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
         authenticationService.authenticateUpdate(userUpdate.getUsername(),
                 jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
-        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),null,null);
+        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
+                userUpdate.getUsername(),userUpdate.getEmail());
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
@@ -68,8 +71,5 @@ public class UserController {
         userService.delete(id);
         return new ApiResponse<>(null);
     }
-
-
-
 
 }
