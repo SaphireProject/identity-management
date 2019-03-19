@@ -52,17 +52,7 @@ public class AuthenticationService {
         //repositoryClient.save(client);
         repositoryUser.save(user);
     }
-/*
-    public UserData getCurrentUserData() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication instanceof JwtAuthenticationFilter.JwtAuthentication) {
-            return (UserData)authentication.getPrincipal();
-        } else {
-            return null;
-        }
-    }
-    userService.findOne(login).getRoles()
-*/
+
     @Transactional
     public void authenticate(String login, String password, HttpServletResponse response) {
         authenticateForRoles(login, password, response,userService.findOne(login).getRoles());

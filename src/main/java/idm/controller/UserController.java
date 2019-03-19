@@ -4,23 +4,26 @@ package idm.controller;
 import idm.config.JwtGenerator;
 import idm.data.User;
 import idm.model.ApiResponse;
+import idm.model.AuthUserResponse;
 import idm.model.UserUpdate;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @RestController
 @RequestMapping("/user")
 //@CrossOrigin(origins="*")
 public class UserController {
+
+    private static final String BEARER_PREFIX = "Bearer ";
 
     @Autowired
     private JwtGenerator jwtGenerator;
@@ -51,13 +54,13 @@ public class UserController {
     }
 //обдумать еще раз
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody UserUpdate userUpdate,
-                                 @RequestHeader("Authorization") String request,
-                                 HttpServletResponse response) {
+    public AuthUserResponse update(@RequestBody UserUpdate userUpdate,
+                                   @RequestHeader("Authorization") String request,
+                                   HttpServletResponse response) {
         userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
         authenticationService.authenticateUpdate(userUpdate.getUsername(),
                 jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
-        return new ResponseEntity(HttpStatus.OK);
+        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),null,null);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)

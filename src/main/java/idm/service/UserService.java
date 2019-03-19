@@ -30,22 +30,6 @@ public class UserService/* implements UserDetailsService*/ {
 
     private static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    //@Override
-    /*public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = repositoryUser.findByUsername(username);
-        if(user == null){
-            throw new UsernameNotFoundException("Invalid username or password.");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority());
-    }
-
-
-/*
-    private List<SimpleGrantedAuthority> getAuthority() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
-*/
-    //@Override
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
         repositoryUser.findAll().iterator().forEachRemaining(list::add);
