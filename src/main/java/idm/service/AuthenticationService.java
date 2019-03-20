@@ -37,8 +37,18 @@ public class AuthenticationService {
     @Transactional
     public void register(UserRegistrationDto userRegistrationDto) {
         User user = repositoryUser.findByUsername(userRegistrationDto.getUsername());
+        User userEmail=repositoryUser.findByEmail(userRegistrationDto.getEmail());
+
+        if (user != null
+                & userEmail != null) {
+            throw new BaseException("User with the given login and email already exists", null);
+        }
+
         if (user != null) {
             throw new BaseException("User with the given login already exists", null);
+        }
+        if (userEmail != null) {
+            throw new BaseException("User with the given email already exists", null);
         }
 
         user = new User();
@@ -66,12 +76,10 @@ public class AuthenticationService {
             throw new BaseException("User with the given login does not exist",null);
         }
 
-        //надо разобраться, в каком формате и куда прилетает пароль
-        /*
-        if (!passwordEncoder.checkPassword(password, user.getPassword())) {
+        if (!user.getPassword().equals(password)) {
             throw new BaseException("Incorrect password",null);
         }
-        */
+
         UserData userData = user.toUserData();
         jwtGenerator.encodeJwt(userData, response);
     }

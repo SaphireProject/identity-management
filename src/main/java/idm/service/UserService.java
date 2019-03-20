@@ -60,6 +60,8 @@ public class UserService/* implements UserDetailsService*/ {
         repositoryUser.deleteById(id);
     }
 
+    public User findByEmail(String email){return repositoryUser.findByEmail(email);}
+
    // @Override
     public User save(UserDto user) {
         User newUser = new User();
@@ -78,25 +80,56 @@ public class UserService/* implements UserDetailsService*/ {
     public UserUpdate update(UserUpdate userUpdate, Long id) {
         User user = findById(id);
         LOGGER.info("user with this id found");
-        User userNew=findOne(userUpdate.getUsername());
-        if(user != null & user.getUsername().equals(userUpdate.getUsername())) {
+        User userUsername=findOne(userUpdate.getUsername());
+        User userEmail = findByEmail(userUpdate.getEmail());
+
+        if(user != null
+                & userUsername !=null
+                & !user.getUsername().equals(userUpdate.getUsername())
+                & userEmail !=null
+                & !user.getEmail().equals(userUpdate.getEmail())){
+            throw new BaseException("user with login and email already exists",null);
+        }
+
+        if(user != null
+                & userUsername !=null
+                & !user.getUsername().equals(userUpdate.getUsername())){
+            throw new BaseException("user with login already exists",null);
+        }
+
+        if(user != null
+                & userEmail !=null
+                & !user.getEmail().equals(userUpdate.getEmail())){
+            throw new BaseException("user with email already exists",null);
+        }
+
+        user.setUsername(userUpdate.getUsername());
+        user.setEmail(userUpdate.getEmail());
+        user.setBio(userUpdate.getBio());
+
+/*
+        if(user != null & user.getUsername().equals(userUpdate.getUsername()) & userEmail==null) {
 
             LOGGER.info("username doesn't change");
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());
             repositoryUser.save(user);
-            LOGGER.info("successful email update");
+            LOGGER.info("successful email and bio update");
         }
-        else if(user != null & userNew==null){
+        else if(user != null & userUsername==null & userEmail==null){
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());
             repositoryUser.save(user);
-            LOGGER.info("successful email and username update");
+            LOGGER.info("successful email, bio and username update");
+        }
+        else if(user != null & ){
+
         }
         else{
             throw new BaseException("user with this login already exists",null);
         }
+        */
         return userUpdate;
     }
 }
