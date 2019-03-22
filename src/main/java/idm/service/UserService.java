@@ -68,11 +68,19 @@ public class UserService/* implements UserDetailsService*/ {
      *
      * */
     public UserUpdate update(UserUpdate userUpdate, Long id) {
+
         User user = findById(id);
         LOGGER.info("user with this id found");
         User userUsername=findOne(userUpdate.getUsername());
         User userEmail = findByEmail(userUpdate.getEmail());
-        String password=userUpdate.getPasswordNew();
+
+        //String originalPassword=;
+        //String passwordNew=;
+        //String passwordOld=;
+
+        if(!user.getPassword().equals(userUpdate.getPasswordOld())){
+            throw new BaseException("Incorrect old password",null);
+        }
         if(user != null
                 & userUsername !=null
                 & !user.getUsername().equals(userUpdate.getUsername())
@@ -93,13 +101,13 @@ public class UserService/* implements UserDetailsService*/ {
             throw new BaseException("user with email already exists",null);
         }
 
-        if(password==null) {
+        if(userUpdate.getPasswordNew()==null) {
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());
         }
         else{
-            user.setPassword(password);
+            user.setPassword(userUpdate.getPasswordNew());
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());

@@ -61,13 +61,15 @@ public class UserController {
     public AuthUserResponse update(@RequestBody UserUpdate userUpdate,
                                    @RequestHeader("Authorization") String request,
                                    HttpServletResponse response) {
+
+
         userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
 
         if(userUpdate.getPasswordNew()==null){
             authenticationService.authenticateUpdate(userUpdate.getUsername(),
                 jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
         }
-        else{
+        else {
             authenticationService.authenticateUpdate(userUpdate.getUsername(),
                     userUpdate.getPasswordNew(), response);
         }
