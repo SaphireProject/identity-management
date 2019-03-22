@@ -5,6 +5,7 @@ import idm.config.JwtGenerator;
 import idm.data.User;
 import idm.model.ApiResponse;
 import idm.model.AuthUserResponse;
+import idm.model.UserDto;
 import idm.model.UserUpdate;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
@@ -42,26 +43,34 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserUpdate getOne(@PathVariable int id) {
-        return new UserUpdate(userService.findById(id).getUsername(),
+    public UserDto getOne(@PathVariable int id) {
+        return new UserDto(userService.findById(id).getUsername(),
                 userService.findById(id).getEmail(),userService.findById(id).getBio());
 
     }
 
 
     @RequestMapping(path = "/me", method = RequestMethod.GET)
-    public UserUpdate getPage(@RequestHeader("Authorization") String request){
+    public UserDto getPage(@RequestHeader("Authorization") String request){
         User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
-        return new UserUpdate(user.getUsername(),user.getEmail(),user.getBio());
+        return new UserDto(user.getUsername(),user.getEmail(),user.getBio());
     }
-//обдумать еще раз
+
+//ToDo: обдумать еще раз, проверить токены и смену пароля
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public AuthUserResponse update(@RequestBody UserUpdate userUpdate,
                                    @RequestHeader("Authorization") String request,
                                    HttpServletResponse response) {
         userService.update(userUpdate, jwtGenerator.decodeNew(request).getUserData().getId());
-        authenticationService.authenticateUpdate(userUpdate.getUsername(),
+
+        if(userUpdate.getPasswordNew()==null){
+            authenticationService.authenticateUpdate(userUpdate.getUsername(),
                 jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
+        }
+        else{
+            authenticationService.authenticateUpdate(userUpdate.getUsername(),
+                    userUpdate.getPasswordNew(), response);
+        }
         return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
                 userUpdate.getUsername(),userUpdate.getEmail());
     }

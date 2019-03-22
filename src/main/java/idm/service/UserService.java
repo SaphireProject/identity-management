@@ -3,7 +3,6 @@ package idm.service;
 
 import idm.data.User;
 import idm.exception.BaseException;
-import idm.model.UserDto;
 import idm.model.UserUpdate;
 import idm.repository.RepositoryClient;
 import idm.repository.RepositoryUser;
@@ -62,15 +61,6 @@ public class UserService/* implements UserDetailsService*/ {
 
     public User findByEmail(String email){return repositoryUser.findByEmail(email);}
 
-   // @Override
-    public User save(UserDto user) {
-        User newUser = new User();
-      //  newUser.setId(user.getId());
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.setEmail(user.getEmail());
-        return repositoryUser.save(newUser);
-    }
 
     //@Override
     /**
@@ -82,7 +72,7 @@ public class UserService/* implements UserDetailsService*/ {
         LOGGER.info("user with this id found");
         User userUsername=findOne(userUpdate.getUsername());
         User userEmail = findByEmail(userUpdate.getEmail());
-
+        String password=userUpdate.getPasswordNew();
         if(user != null
                 & userUsername !=null
                 & !user.getUsername().equals(userUpdate.getUsername())
@@ -103,33 +93,17 @@ public class UserService/* implements UserDetailsService*/ {
             throw new BaseException("user with email already exists",null);
         }
 
-        user.setUsername(userUpdate.getUsername());
-        user.setEmail(userUpdate.getEmail());
-        user.setBio(userUpdate.getBio());
-
-/*
-        if(user != null & user.getUsername().equals(userUpdate.getUsername()) & userEmail==null) {
-
-            LOGGER.info("username doesn't change");
-            user.setEmail(userUpdate.getEmail());
-            user.setBio(userUpdate.getBio());
-            repositoryUser.save(user);
-            LOGGER.info("successful email and bio update");
-        }
-        else if(user != null & userUsername==null & userEmail==null){
+        if(password==null) {
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());
-            repositoryUser.save(user);
-            LOGGER.info("successful email, bio and username update");
-        }
-        else if(user != null & ){
-
         }
         else{
-            throw new BaseException("user with this login already exists",null);
+            user.setPassword(password);
+            user.setUsername(userUpdate.getUsername());
+            user.setEmail(userUpdate.getEmail());
+            user.setBio(userUpdate.getBio());
         }
-        */
         return userUpdate;
     }
 }

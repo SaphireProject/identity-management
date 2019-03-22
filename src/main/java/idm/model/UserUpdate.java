@@ -3,10 +3,22 @@ package idm.model;
 public class UserUpdate {
 
     private String username;
-
     private String email;
-
     private String bio;
+    private String passwordOld;
+    private String passwordNew;
+
+    public UserUpdate(String username, String email, String bio,
+                      String passwordOld, String passwordNew) {
+        this.username = username;
+        this.email = email;
+        this.bio = bio;
+        this.passwordOld = passwordOld;
+        this.passwordNew = passwordNew;
+    }
+
+    public UserUpdate() {
+    }
 
     public String getBio() {
         return bio;
@@ -32,12 +44,21 @@ public class UserUpdate {
         this.email = email;
     }
 
-    public UserUpdate(String username , String email, String bio) {
-        this.username = username;
-        this.email = email;
-        this.bio=bio;
+    public String getPasswordOld() {
+        return passwordOld;
     }
 
-    public UserUpdate() {
+    public void setPasswordOld(String passwordOld) {
+        this.passwordOld = passwordOld;
     }
+
+    public String getPasswordNew() {
+        return passwordNew;
+    }
+
+    public void setPasswordNew(String passwordNew) {
+        this.passwordNew = passwordNew;
+    }
+
+
 }

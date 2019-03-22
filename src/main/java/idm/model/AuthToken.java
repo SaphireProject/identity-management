@@ -1,5 +1,6 @@
 package idm.model;
 
+/*
 public class AuthToken {
     private String token;
     private String username;
@@ -34,3 +35,4 @@ public class AuthToken {
         this.username = username;
     }
 }
+*/

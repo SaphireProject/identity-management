@@ -15,7 +15,6 @@ public class User /*implements UserDetails*/ {
     @Column
     private String username;
 
-    //@JsonIgnore
     @Column
     private String password;
 
