@@ -65,7 +65,7 @@ public class AuthenticationService {
 
     @Transactional
     public void authenticate(String login, String password, HttpServletResponse response) {
-        authenticateForRoles(login, password, response,userService.findOne(login).getRoles());
+        authenticateForRoles(login, password, response, userService.findOne(login).getRoles());
     }
 
     private void authenticateForRoles(String login, String password,

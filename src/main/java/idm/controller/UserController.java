@@ -52,6 +52,7 @@ public class UserController {
 
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public UserDto getPage(@RequestHeader("Authorization") String request){
+
         User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
         return new UserDto(user.getUsername(),user.getEmail(),user.getBio());
     }

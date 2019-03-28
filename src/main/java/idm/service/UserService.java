@@ -62,11 +62,6 @@ public class UserService/* implements UserDetailsService*/ {
     public User findByEmail(String email){return repositoryUser.findByEmail(email);}
 
 
-    //@Override
-    /**
-     * Получаем новые данные и айдишник из токена, возвращем хз что, наверно те же данные
-     *
-     * */
     public UserUpdate update(UserUpdate userUpdate, Long id) {
 
         User user = findById(id);
@@ -74,13 +69,13 @@ public class UserService/* implements UserDetailsService*/ {
         User userUsername=findOne(userUpdate.getUsername());
         User userEmail = findByEmail(userUpdate.getEmail());
 
-        //String originalPassword=;
-        //String passwordNew=;
-        //String passwordOld=;
+        if(!userUpdate.getPasswordOld().equals("null") /*&&!userUpdate.getPasswordOld().isEmpty()*/) {
 
-        if(!user.getPassword().equals(userUpdate.getPasswordOld())){
-            throw new BaseException("Incorrect old password",null);
+            if (!user.getPassword().equals(userUpdate.getPasswordOld())) {
+                throw new BaseException("Incorrect old password" , null);
+            }
         }
+
         if(user != null
                 & userUsername !=null
                 & !user.getUsername().equals(userUpdate.getUsername())
@@ -101,7 +96,7 @@ public class UserService/* implements UserDetailsService*/ {
             throw new BaseException("user with email already exists",null);
         }
 
-        if(userUpdate.getPasswordNew()==null) {
+        if(userUpdate.getPasswordNew().equals("null") /*&&userUpdate.getPasswordNew().isEmpty()*/) {
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());

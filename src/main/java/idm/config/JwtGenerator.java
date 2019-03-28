@@ -2,6 +2,7 @@ package idm.config;
 
 
 import idm.data.Role;
+import idm.exception.BaseException;
 import idm.model.UserData;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -83,13 +84,13 @@ public class JwtGenerator {
         String tokennew = token.substring(BEARER_PREFIX.length());
         DefaultClaims claims = extractClaims(tokennew);
         if (claims == null) {
-            return null;
+            throw new BaseException("Unauthorized",null);
         }
 
         Instant expire = new Date(claims.get(EXPIRE, Long.class)).toInstant();
         Instant refresh = new Date(claims.get(REFRESH, Long.class)).toInstant();
         if (expire.isBefore(Instant.now())) {
-            return null;
+            throw new BaseException("Unauthorized",null);
         }
 
         Long id = claims.get(ID, Long.class);
