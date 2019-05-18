@@ -3,10 +3,7 @@ package idm.controller;
 
 import idm.config.JwtGenerator;
 import idm.data.User;
-import idm.model.ApiResponse;
-import idm.model.AuthUserResponse;
-import idm.model.UserDto;
-import idm.model.UserUpdate;
+import idm.model.*;
 import idm.service.AuthenticationService;
 import idm.service.UserService;
 import org.slf4j.Logger;
@@ -44,22 +41,38 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable int id) {
-        return new UserDto(userService.findById(id).getUsername(),
-                userService.findById(id).getEmail(),userService.findById(id).getBio());
+        return new UserDto(
+                userService.findById(id).getUsername(),
+                userService.findById(id).getEmail(),
+                userService.findById(id).getBio()
+        );
 
     }
 
-
+    @GetMapping("/info")
+    public UserDtoWithId getOneUsername(@RequestHeader("Authorization") String request,
+                                        @RequestBody String usernameUser) {
+        User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
+        userService.findOne(usernameUser);
+        return new UserDtoWithId(
+                usernameUser,
+                userService.findOne(usernameUser).getEmail(),
+                userService.findOne(usernameUser).getId()
+            );
+    }
 
 
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public UserDto getPage(@RequestHeader("Authorization") String request){
 
         User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
-        return new UserDto(user.getUsername(),user.getEmail(),user.getBio());
+        return new UserDto(
+                user.getUsername(),
+                user.getEmail(),
+                user.getBio()
+        );
     }
 
-//ToDo: обдумать еще раз, проверить токены и смену пароля
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public AuthUserResponse update(@RequestBody UserUpdate userUpdate,
                                    @RequestHeader("Authorization") String request,
@@ -70,14 +83,18 @@ public class UserController {
 
         if(userUpdate.getPasswordNew()==null){
             authenticationService.authenticateUpdate(userUpdate.getUsername(),
-                jwtGenerator.decodeNew(request).getUserData().getPassword(), response);
+                jwtGenerator.decodeNew(request).getUserData().getPassword(),
+                    response);
         }
         else {
             authenticationService.authenticateUpdate(userUpdate.getUsername(),
                     userUpdate.getPasswordNew(), response);
         }
-        return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
-                userUpdate.getUsername(),userUpdate.getEmail());
+        return new AuthUserResponse(
+                response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
+                userUpdate.getUsername(),userUpdate.getEmail(),
+                jwtGenerator.decodeNew(request).getUserData().getId()
+        );
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)

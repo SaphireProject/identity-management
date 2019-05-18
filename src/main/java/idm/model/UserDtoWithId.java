@@ -1,27 +1,19 @@
 package idm.model;
 
-public class UserDto {
+public class UserDtoWithId {
 
+    private Long id;
     private String username;
-    //private String password;
     private String email;
-    private String bio;
 
-    public UserDto() {
+    public UserDtoWithId() {
     }
 
-    public UserDto(String username , String email , String bio) {
+    public UserDtoWithId(String username , String email , Long id) {
+        this.id=id;
         this.username = username;
         this.email = email;
-        this.bio = bio;
-    }
 
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
     }
 
     public String getEmail() {
@@ -40,5 +32,11 @@ public class UserDto {
         this.username = username;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
