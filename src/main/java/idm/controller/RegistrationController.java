@@ -45,10 +45,14 @@ public class RegistrationController {
     public AuthUserResponse addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,
                                   HttpServletResponse response) {
         authenticationService.register(userRegistrationDto);
-        authenticationService.authenticate(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(), response);
+        authenticationService.authenticate(userRegistrationDto.getUsername(),
+                userRegistrationDto.getPassword(),
+                response);
+
         return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
                 userRegistrationDto.getUsername(),
-                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail());
+                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail(),
+                userService.findOne(userRegistrationDto.getUsername()).getId());
     }
 
     @RequestMapping(value ="authenticate/generate-token", method = RequestMethod.POST)
@@ -56,7 +60,8 @@ public class RegistrationController {
         authenticationService.authenticate(loginUser.getUsername(), loginUser.getPassword(), response);
         return new AuthUserResponse(response.getHeader(AUTHORIZATION).substring(BEARER_PREFIX.length()),
                 loginUser.getUsername(),
-                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail());
+                userService.findById(jwtGenerator.decodeNew(response.getHeader(AUTHORIZATION)).getUserData().getId()).getEmail(),
+                userService.findOne(loginUser.getUsername()).getId());
     }
 
 //написать для админа
