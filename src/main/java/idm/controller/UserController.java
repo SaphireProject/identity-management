@@ -50,9 +50,8 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public UserDtoWithId getOneUsername(@RequestHeader("Authorization") String request,
-                                        @RequestBody String usernameUser) {
-        User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
+    public UserDtoWithId getOneUsername(@RequestBody String usernameUser) {
+        //User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
         userService.findOne(usernameUser);
         return new UserDtoWithId(
                 usernameUser,
