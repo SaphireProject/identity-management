@@ -49,15 +49,15 @@ public class UserController {
 
     }
 
-    @GetMapping("/info")
-    public UserDtoWithId getOneUsername(@RequestBody String usernameUser) {
+    @RequestMapping(path = "/info", method = RequestMethod.GET)
+    public UserDtoWithId getOneUsername(@RequestBody Username username) {
         //User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
-        userService.findOne(usernameUser);
+        User user= userService.findOne(username.getUsername());
         return new UserDtoWithId(
-                usernameUser,
-                userService.findOne(usernameUser).getEmail(),
-                userService.findOne(usernameUser).getId()
-            );
+                username.getUsername(),
+                user.getEmail(),
+                user.getId()
+        );
     }
 
 

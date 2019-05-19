@@ -54,6 +54,8 @@ public class UserService/* implements UserDetailsService*/ {
         return repositoryUser.findByUsername(username);
     }
 
+
+
     //@Override
     public void delete(long id) {
         repositoryUser.deleteById(id);
