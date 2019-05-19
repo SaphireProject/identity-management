@@ -49,7 +49,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(path = "/info", method = RequestMethod.GET)
+    @RequestMapping(path = "/info", method = RequestMethod.POST)
     public UserDtoWithId getOneUsername(@RequestBody Username username) {
         //User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
         User user= userService.findOne(username.getUsername());
