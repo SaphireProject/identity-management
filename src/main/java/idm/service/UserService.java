@@ -71,7 +71,7 @@ public class UserService/* implements UserDetailsService*/ {
         User userUsername=findOne(userUpdate.getUsername());
         User userEmail = findByEmail(userUpdate.getEmail());
 
-        if(!userUpdate.getPasswordOld().equals("null") /*&&!userUpdate.getPasswordOld().isEmpty()*/) {
+        if(!userUpdate.getPasswordOld().equals("null")) {
 
             if (!user.getPassword().equals(userUpdate.getPasswordOld())) {
                 throw new BaseException("Incorrect old password" , null);
@@ -98,7 +98,7 @@ public class UserService/* implements UserDetailsService*/ {
             throw new BaseException("user with email already exists",null);
         }
 
-        if(userUpdate.getPasswordNew().equals("null") /*&&userUpdate.getPasswordNew().isEmpty()*/) {
+        if(userUpdate.getPasswordNew().equals("null") ) {
             user.setUsername(userUpdate.getUsername());
             user.setEmail(userUpdate.getEmail());
             user.setBio(userUpdate.getBio());
