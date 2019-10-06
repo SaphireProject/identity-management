@@ -49,14 +49,10 @@ public class UserService/* implements UserDetailsService*/ {
         return user;
     }
 
-   // @Override
     public User findOne(String username) {
         return repositoryUser.findByUsername(username);
     }
-
-
-
-    //@Override
+    
     public void delete(long id) {
         repositoryUser.deleteById(id);
     }
