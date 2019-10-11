@@ -46,12 +46,10 @@ public class UserController {
                 userService.findById(id).getEmail(),
                 userService.findById(id).getBio()
         );
-
     }
 
     @RequestMapping(path = "/info", method = RequestMethod.POST)
     public UserDtoWithId getOneUsername(@RequestBody Username username) {
-        //User user = userService.findOne(jwtGenerator.decodeNew(request).getUserData().getLogin());
         User user= userService.findOne(username.getUsername());
         return new UserDtoWithId(
                 username.getUsername(),

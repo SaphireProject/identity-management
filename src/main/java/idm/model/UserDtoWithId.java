@@ -13,7 +13,6 @@ public class UserDtoWithId {
         this.id=id;
         this.username = username;
         this.email = email;
-
     }
 
     public String getEmail() {

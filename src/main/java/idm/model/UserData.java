@@ -11,7 +11,6 @@ public class UserData implements UserDetails {
     private String login;
     private Role roles;
 
-
     public UserData() {
     }
 
@@ -88,5 +87,4 @@ public class UserData implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
-
 }

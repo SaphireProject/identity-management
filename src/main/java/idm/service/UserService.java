@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service//(value = "userService")
-public class UserService/* implements UserDetailsService*/ {
+@Service
+public class UserService {
     @Autowired
     private RepositoryUser repositoryUser;
 
@@ -52,13 +52,12 @@ public class UserService/* implements UserDetailsService*/ {
     public User findOne(String username) {
         return repositoryUser.findByUsername(username);
     }
-    
+
     public void delete(long id) {
         repositoryUser.deleteById(id);
     }
 
     public User findByEmail(String email){return repositoryUser.findByEmail(email);}
-
 
     public UserUpdate update(UserUpdate userUpdate, Long id) {
 

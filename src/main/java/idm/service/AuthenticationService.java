@@ -33,7 +33,6 @@ public class AuthenticationService {
     @Autowired
     private UserService userService;
 
-
     @Transactional
     public void register(UserRegistrationDto userRegistrationDto) {
         User user = repositoryUser.findByUsername(userRegistrationDto.getUsername());
@@ -43,7 +42,6 @@ public class AuthenticationService {
                 & userEmail != null) {
             throw new BaseException("User with the given login and email already exists", null);
         }
-
         if (user != null) {
             throw new BaseException("User with the given login already exists", null);
         }
@@ -57,9 +55,6 @@ public class AuthenticationService {
         user.setEmail((userRegistrationDto.getEmail()));
         user.setRoles(Role.USER);
         user.setBio(userRegistrationDto.getBio());
-
-        //Client client = new Client(UUID.randomUUID().toString(), user);
-        //repositoryClient.save(client);
         repositoryUser.save(user);
     }
 

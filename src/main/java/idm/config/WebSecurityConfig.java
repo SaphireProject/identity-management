@@ -12,28 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true,proxyTargetClass=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserService userService;
-/*
-    @Resource
-    private UserDetailsService userDetailsService;
-*/
+
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-/*
-    @Bean
-    public BCryptPasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
-*/
-
 
     @Bean
     public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {
@@ -45,25 +33,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
 
     }
-
-/*
-    @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-    }
- authorizeRequests()
-                .antMatchers("/auth/test", "/auth/authenticate/generate-token","/api/v2/api-docs",
-                        "/swagger-ui.html","/docs","v2/api-docs", "/auth/registration","/user/edit",
-                        "/user/{id}","/user/delete/{id}","/user/list","/rest/docs","docApi/swagger-ui.html","/user/me").permitAll()
-                .anyRequest().authenticated()
-                .and();
-
-
-
-
-*/
-
-
-
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name ="usertable")
-public class User /*implements UserDetails*/ {
+public class User{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -24,14 +24,6 @@ public class User /*implements UserDetails*/ {
     @Column
     private String bio;
 
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
     public User() {
     }
 
@@ -43,8 +35,14 @@ public class User /*implements UserDetails*/ {
         this.roles = roles;
     }
 
-   // @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    //@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     @Enumerated(EnumType.STRING)
     private Role roles;
 

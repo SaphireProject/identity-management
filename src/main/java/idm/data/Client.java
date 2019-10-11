@@ -3,6 +3,8 @@ package idm.data;
 
 import javax.persistence.*;
 
+
+
 @Entity
 public class Client {
     @Id
@@ -14,8 +16,6 @@ public class Client {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
-
-
 
     public Client() {
     }
