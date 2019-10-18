@@ -46,6 +46,11 @@ public class RegistrationController {
     @Autowired
     private JwtGenerator jwtGenerator;
 
+    /**
+     * controller which registers and next authentication a user in system
+     *
+     * @param userRegistrationDto info about user which required for registration
+     */
     @RequestMapping(value = "registration", method = RequestMethod.POST)
     public AuthUserResponse addUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto,
                                   HttpServletResponse response) {
@@ -63,6 +68,11 @@ public class RegistrationController {
         );
     }
 
+    /**
+     * controller which authentication a user in system
+     *
+     * @param loginUser info about user which required for authenticate
+     */
     @RequestMapping(value ="authenticate/generate-token", method = RequestMethod.POST)
     public AuthUserResponse login(@RequestBody LoginUser loginUser, HttpServletResponse response){
         authenticationService.authenticate(loginUser.getUsername(), loginUser.getPassword(), response);
@@ -74,10 +84,4 @@ public class RegistrationController {
                 userService.findOne(loginUser.getUsername()).getId()
         );
     }
-
-//написать для админа
-
-
-
-
 }

@@ -39,11 +39,19 @@ public class UserController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    /**
+     * controller which return a list of users from the database
+     *
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ApiResponse<List<User>> listUser(){
         return new ApiResponse<>(userService.findAll());
     }
 
+    /**
+     * controller which return a user from the database with common information
+     *
+     */
     @GetMapping("/{id}")
     public UserDto getOne(@PathVariable int id) {
         return new UserDto(
@@ -53,6 +61,10 @@ public class UserController {
         );
     }
 
+    /**
+     * controller which return a user from the database with information
+     *
+     */
     @RequestMapping(path = "/info", method = RequestMethod.POST)
     public UserDtoWithId getOneUsername(@RequestBody Username username) {
         User user= userService.findOne(username.getUsername());
@@ -63,7 +75,10 @@ public class UserController {
         );
     }
 
-
+    /**
+     * controller which return a personal information users
+     *
+     */
     @RequestMapping(path = "/me", method = RequestMethod.GET)
     public UserDto getPage(@RequestHeader("Authorization") String request){
 
@@ -75,6 +90,10 @@ public class UserController {
         );
     }
 
+    /**
+     * controller which edit a personal information users
+     *
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public AuthUserResponse update(@RequestBody UserUpdate userUpdate,
                                    @RequestHeader("Authorization") String request,
@@ -99,6 +118,10 @@ public class UserController {
         );
     }
 
+    /**
+     * controller which delete user
+     *
+     */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ApiResponse<Void> delete(@PathVariable long id) {
         userService.delete(id);
