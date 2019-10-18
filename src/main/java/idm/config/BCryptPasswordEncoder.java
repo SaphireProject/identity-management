@@ -3,6 +3,11 @@ package idm.config;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * BCryptPasswordEncoder class uses for encode and check password
+ *
+ */
 @Component
 public class BCryptPasswordEncoder {
 

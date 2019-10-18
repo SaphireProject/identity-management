@@ -18,6 +18,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * JwtGenerator class uses generation jwt-token
+ *
+ */
 @Component
 public class JwtGenerator {
 

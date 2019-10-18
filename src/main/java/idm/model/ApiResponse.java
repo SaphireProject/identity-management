@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * ApiResponse class for generate answer on request
+ *
+ */
 public class ApiResponse<T> {
 
     public ApiResponse() {

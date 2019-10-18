@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * AuthUserResponse class contains system user data for frontend
+ *
+ */
 public class AuthUserResponse {
     private Long id;
     private Object token;

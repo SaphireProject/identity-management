@@ -8,6 +8,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+
+/**
+ * SwaggerConfig class contains configuration Swagger
+ *
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

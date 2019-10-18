@@ -2,6 +2,11 @@ package idm.exception;
 
 import org.springframework.http.HttpStatus;
 
+
+/**
+ * BaseException class is pattern for generate exception
+ *
+ */
 public class BaseException extends RuntimeException{
 
     private HttpStatus httpStatus;

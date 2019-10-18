@@ -2,6 +2,11 @@ package idm.model;
 
 import javax.validation.constraints.NotNull;
 
+
+/**
+ * UserRegistrationDto class contains user data for registration
+ *
+ */
 public class UserRegistrationDto {
 
     @NotNull

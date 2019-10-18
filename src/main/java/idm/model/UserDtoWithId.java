@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * UserDtoWithId class contains user data include id
+ *
+ */
 public class UserDtoWithId {
 
     private Long id;

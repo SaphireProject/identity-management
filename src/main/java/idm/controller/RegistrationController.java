@@ -19,9 +19,14 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+
+/**
+ * RegistrationController class uses AuthenticationService for realize authentication and authorization
+ * and responsible on request from frontend
+ *
+ */
 @RestController
 @RequestMapping("/auth")
-
 public class RegistrationController {
 
     private static final String BEARER_PREFIX = "Bearer ";

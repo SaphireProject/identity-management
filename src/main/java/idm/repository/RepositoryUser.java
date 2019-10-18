@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+/**
+ * RepositoryUser interface for repository with user
+ */
 @Repository
 @ComponentScan
 public interface RepositoryUser extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {

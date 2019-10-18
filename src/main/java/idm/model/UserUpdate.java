@@ -1,5 +1,10 @@
 package idm.model;
 
+/**
+ * UserUpdate class contains user data for update
+ *
+ */
+
 public class UserUpdate {
 
     private String username;

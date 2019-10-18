@@ -16,6 +16,11 @@ import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
+
+/**
+ * UserController class uses UserService for realize UM and responsible on request from frontend
+ *
+ */
 @RestController
 @RequestMapping("/user")
 //@CrossOrigin(origins="*")

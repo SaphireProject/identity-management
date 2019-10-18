@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
 
+
+/**
+ * JwtAuthenticationFilter class uses for control jwt token in system
+ *
+ */
 @Component
 public class JwtAuthenticationFilter implements Filter {
 /*

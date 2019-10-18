@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * LoginUser class contains data for authenticate
+ *
+ */
 public class LoginUser {
 
     private String username;

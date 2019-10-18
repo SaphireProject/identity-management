@@ -6,6 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+
+/**
+ * UserData class contains main internal system user data
+ *
+ */
 public class UserData implements UserDetails {
     private Long id;
     private String login;

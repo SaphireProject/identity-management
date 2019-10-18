@@ -6,6 +6,10 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * CORSFilter class uses for settings requests
+ *
+ */
 @Component
 public class CORSFilter implements Filter {
 

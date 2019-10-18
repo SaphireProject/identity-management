@@ -5,6 +5,11 @@ import idm.model.UserData;
 
 import javax.persistence.*;
 
+
+/**
+ * User class is model human in system
+ *
+ */
 @Entity
 @Table(name ="usertable")
 public class User{

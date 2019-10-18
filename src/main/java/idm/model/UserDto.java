@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * UserDto class contains user data include username, email, bio
+ *
+ */
 public class UserDto {
 
     private String username;

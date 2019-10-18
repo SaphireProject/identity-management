@@ -1,5 +1,10 @@
 package idm.model;
 
+
+/**
+ * Username class contains user username
+ *
+ */
 public class Username {
     private String username;
 
